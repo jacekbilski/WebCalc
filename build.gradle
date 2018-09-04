@@ -27,16 +27,13 @@ repositories {
 }
 
 dependencies {
-  compile('org.springframework.boot:spring-boot-starter-webflux')
+  compile('org.springframework.boot:spring-boot-starter-web')
   testCompile('org.springframework.boot:spring-boot-starter-test') {
     exclude group: "junit", module: "junit"
   }
   testCompile('io.rest-assured:rest-assured:3.1.1')
   testCompile('org.junit.jupiter:junit-jupiter-api:5.2.0')
   testRuntime('org.junit.jupiter:junit-jupiter-engine:5.2.0')
-  testCompile('io.projectreactor:reactor-test') {
-    exclude group: "junit", module: "junit"
-  }
 }
 
 test {
