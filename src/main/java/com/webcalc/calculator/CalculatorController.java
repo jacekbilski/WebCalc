@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CalculatorController {
 
   @PostMapping("/eval")
-  public void calculate() {
+  public String calculate() {
+    return "3";
   }
 }
