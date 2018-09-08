@@ -8,6 +8,6 @@ public class CalculatorController {
 
   @PostMapping("/eval")
   public String calculate() {
-    return "3";
+    return new Calculator().eval("");
   }
 }
