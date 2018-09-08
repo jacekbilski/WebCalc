@@ -8,8 +8,8 @@ public class CalculatorController {
 
   private final Calculator calculator;
 
-  public CalculatorController() {
-    calculator = new Calculator();
+  public CalculatorController(Calculator calculator) {
+    this.calculator = calculator;
   }
 
   @PostMapping("/eval")
