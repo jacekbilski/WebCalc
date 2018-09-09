@@ -22,4 +22,14 @@ class CalculatorShould {
     String result = calculator.eval(input);
     assertThat(result).isEqualTo(expectedResult);
   }
+
+  @DisplayName("Subtract")
+  @ParameterizedTest(name = "input: ''{0}'', expected result: ''{1}''")
+  @CsvSource({
+      "1 2 -, -1",
+  })
+  void subtract(String input, String expectedResult) {
+    String result = calculator.eval(input);
+    assertThat(result).isEqualTo(expectedResult);
+  }
 }
