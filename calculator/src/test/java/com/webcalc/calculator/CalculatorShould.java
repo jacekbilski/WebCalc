@@ -8,6 +8,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class CalculatorShould {
 
+  private final Calculator calculator = new Calculator();
+
   @DisplayName("Sum")
   @ParameterizedTest(name = "input: ''{0}'', expected result: ''{1}''")
   @CsvSource({
@@ -17,7 +19,6 @@ class CalculatorShould {
       "-13 122 +, 109",
   })
   void sum(String input, String expectedResult) {
-    Calculator calculator = new Calculator();
     String result = calculator.eval(input);
     assertThat(result).isEqualTo(expectedResult);
   }
