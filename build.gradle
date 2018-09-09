@@ -1,10 +1,9 @@
 buildscript {
   ext {
-    springBootVersion = '2.1.0.M2'
+    springBootVersion = "2.1.0.M2"
   }
   repositories {
     mavenCentral()
-    maven { url "https://repo.spring.io/snapshot" }
     maven { url "https://repo.spring.io/milestone" }
   }
   dependencies {
@@ -12,28 +11,27 @@ buildscript {
   }
 }
 
-apply plugin: 'java'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
+apply plugin: "java"
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
 
-group = 'com.webcalc'
-version = '0.0.1-SNAPSHOT'
+group = "com.webcalc"
+version = "0.0.1-SNAPSHOT"
 sourceCompatibility = 10
 
 repositories {
   mavenCentral()
-  maven { url "https://repo.spring.io/snapshot" }
   maven { url "https://repo.spring.io/milestone" }
 }
 
 dependencies {
-  compile('org.springframework.boot:spring-boot-starter-web')
-  testCompile('org.springframework.boot:spring-boot-starter-test') {
+  implementation("org.springframework.boot:spring-boot-starter-web")
+  testImplementation("org.springframework.boot:spring-boot-starter-test") {
     exclude group: "junit", module: "junit"
   }
-  testCompile('io.rest-assured:rest-assured:3.1.1')
-  testCompile('org.junit.jupiter:junit-jupiter-api:5.2.0')
-  testRuntime('org.junit.jupiter:junit-jupiter-engine:5.2.0')
+  testImplementation("io.rest-assured:rest-assured")
+  testImplementation("org.junit.jupiter:junit-jupiter-api")
+  testRuntime("org.junit.jupiter:junit-jupiter-engine")
 }
 
 test {
