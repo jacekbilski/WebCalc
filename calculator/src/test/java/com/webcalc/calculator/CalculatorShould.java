@@ -27,6 +27,8 @@ class CalculatorShould {
   @ParameterizedTest(name = "input: ''{0}'', expected result: ''{1}''")
   @CsvSource({
       "1 2 -, -1",
+      "3 0 -, 3",
+      "2 -2 -, 4",
   })
   void subtract(String input, String expectedResult) {
     String result = calculator.eval(input);
