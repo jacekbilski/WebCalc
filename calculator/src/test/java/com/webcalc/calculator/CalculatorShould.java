@@ -13,6 +13,8 @@ class CalculatorShould {
   @CsvSource({
       "1 2 +, 3",
       "2 3 +, 5",
+      "0 -1 +, -1",
+      "-13 122 +, 109",
   })
   void sum(String input, String expectedResult) {
     Calculator calculator = new Calculator();
