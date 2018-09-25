@@ -54,6 +54,9 @@ class CalculatorShould {
       "2 1 /, 2, 2",
       "1 2 /, '0,5', 2",
       "2 3 /, '0,67', 2",
+      "9 -4 /, '-2,25', 9",
+      "-47 -13 /, '3,615384615', 9",
+      "3 2 /, 2, 0",
   })
   void divide(String input, String expectedResult, int maxFractionDigits) {
     calculator.setMaxFractionDigits(maxFractionDigits);

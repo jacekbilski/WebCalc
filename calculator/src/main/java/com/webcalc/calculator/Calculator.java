@@ -13,6 +13,7 @@ public class Calculator {
 
   void setMaxFractionDigits(int maxFractionDigits) {
     this.maxFractionDigits = maxFractionDigits;
+    formatter.setMaximumFractionDigits(maxFractionDigits);
   }
 
   String eval(String input) {
