@@ -39,6 +39,9 @@ class CalculatorShould {
   @ParameterizedTest(name = "input: ''{0}'', expected result: ''{1}''")
   @CsvSource({
       "1 2 *, 2",
+      "3 0 *, 0",
+      "-12 12 *, -144",
+      "-3 -5 *, 15",
   })
   void multiply(String input, String expectedResult) {
     String result = calculator.eval(input);
