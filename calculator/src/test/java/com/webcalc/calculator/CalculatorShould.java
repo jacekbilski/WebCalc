@@ -34,4 +34,14 @@ class CalculatorShould {
     String result = calculator.eval(input);
     assertThat(result).isEqualTo(expectedResult);
   }
+
+  @DisplayName("Multiply")
+  @ParameterizedTest(name = "input: ''{0}'', expected result: ''{1}''")
+  @CsvSource({
+      "1 2 *, 2",
+  })
+  void multiply(String input, String expectedResult) {
+    String result = calculator.eval(input);
+    assertThat(result).isEqualTo(expectedResult);
+  }
 }
