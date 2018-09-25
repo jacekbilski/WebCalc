@@ -47,4 +47,14 @@ class CalculatorShould {
     String result = calculator.eval(input);
     assertThat(result).isEqualTo(expectedResult);
   }
+
+  @DisplayName("Divide")
+  @ParameterizedTest(name = "input: ''{0}'', expected result: ''{1}''")
+  @CsvSource({
+      "2 1 /, 2",
+  })
+  void divide(String input, String expectedResult) {
+    String result = calculator.eval(input);
+    assertThat(result).isEqualTo(expectedResult);
+  }
 }

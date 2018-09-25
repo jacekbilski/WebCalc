@@ -19,6 +19,9 @@ public class Calculator {
       case "*":
         result = v1.multiply(v2);
         break;
+      case "/":
+        result = v1.divide(v2);
+        break;
       default:
         throw new RuntimeException("Unsupported operation: " + tokens[2]);
     }
