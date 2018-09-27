@@ -49,12 +49,14 @@ class CalculatorShould {
   }
 
   @DisplayName("Divide")
-  @ParameterizedTest(name = "input: ''{0}'', expected result: ''{1}''")
+  @ParameterizedTest(name = "input: ''{0}'', max fraction digits: ''{2}'', expected result: ''{1}''")
   @CsvSource({
-      "2 1 /, 2",
-      "1 2 /, '0,5'",
+      "2 1 /, 2, 2",
+      "1 2 /, '0,5', 2",
+      "2 3 /, '0,67', 2",
   })
-  void divide(String input, String expectedResult) {
+  void divide(String input, String expectedResult, int maxFractionDigits) {
+    calculator.setMaxFractionDigits(maxFractionDigits);
     String result = calculator.eval(input);
     assertThat(result).isEqualTo(expectedResult);
   }
