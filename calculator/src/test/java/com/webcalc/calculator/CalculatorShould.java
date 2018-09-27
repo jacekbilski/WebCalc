@@ -52,6 +52,7 @@ class CalculatorShould {
   @ParameterizedTest(name = "input: ''{0}'', expected result: ''{1}''")
   @CsvSource({
       "2 1 /, 2",
+      "1 2 /, '0,5'",
   })
   void divide(String input, String expectedResult) {
     String result = calculator.eval(input);
