@@ -24,7 +24,9 @@ class RestApiTest {
 
   @Test
   void settingMaxFractionDigits() {
+    SessionFilter session = new SessionFilter();
     given()
+        .filter(session)
         .body("5")
     .when()
         .put("/maxFractionDigits")
@@ -32,6 +34,7 @@ class RestApiTest {
         .statusCode(200);
 
     given()
+        .filter(session)
         .body("8 7 /")
     .when()
         .post("/eval")
