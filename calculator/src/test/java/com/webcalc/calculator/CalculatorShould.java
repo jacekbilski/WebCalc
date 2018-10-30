@@ -19,7 +19,7 @@ class CalculatorShould {
       "-13 122 +, 109",
   })
   void sum(String input, String expectedResult) {
-    String result = calculator.eval(input);
+    String result = calculator.eval(input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
     assertThat(result).isEqualTo(expectedResult);
   }
 
@@ -31,7 +31,7 @@ class CalculatorShould {
       "2 -2 -, 4",
   })
   void subtract(String input, String expectedResult) {
-    String result = calculator.eval(input);
+    String result = calculator.eval(input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
     assertThat(result).isEqualTo(expectedResult);
   }
 
@@ -44,7 +44,7 @@ class CalculatorShould {
       "-3 -5 *, 15",
   })
   void multiply(String input, String expectedResult) {
-    String result = calculator.eval(input);
+    String result = calculator.eval(input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
     assertThat(result).isEqualTo(expectedResult);
   }
 
@@ -59,8 +59,7 @@ class CalculatorShould {
       "3 2 /, 2, 0",
   })
   void divide(String input, String expectedResult, int maxFractionDigits) {
-    calculator.setMaxFractionDigits(maxFractionDigits);
-    String result = calculator.eval(input);
+    String result = calculator.eval(input, maxFractionDigits);
     assertThat(result).isEqualTo(expectedResult);
   }
 }
