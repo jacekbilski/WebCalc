@@ -12,23 +12,17 @@ public class Calculator {
 
   private NumberFormat formatter = NumberFormat.getNumberInstance(Locale.GERMANY);
 
-  private int maxFractionDigits;
-
-  void setMaxFractionDigits(int maxFractionDigits) {
-    this.maxFractionDigits = maxFractionDigits;
-    formatter.setMaximumFractionDigits(maxFractionDigits);
-  }
-
   String eval(String input, int maxFractionDigits) {
     String[] tokens = input.split(" ");
     BigDecimal v1 = new BigDecimal(tokens[0]);
     BigDecimal v2 = new BigDecimal(tokens[1]);
-    BinaryOperator<BigDecimal> f = function(tokens[2]);
+    BinaryOperator<BigDecimal> f = function(tokens[2], maxFractionDigits);
     BigDecimal result = f.apply(v1, v2);
+    formatter.setMaximumFractionDigits(maxFractionDigits);
     return formatter.format(result);
   }
 
-  private BinaryOperator<BigDecimal> function(String function) {
+  private BinaryOperator<BigDecimal> function(String function, int maxFractionDigits) {
     switch (function) {
       case "+":
         return BigDecimal::add;
