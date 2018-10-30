@@ -8,6 +8,8 @@ import java.util.function.BinaryOperator;
 
 public class Calculator {
 
+  static final int DEFAULT_MAX_FRACTION_DIGITS = 2;
+
   private NumberFormat formatter = NumberFormat.getNumberInstance(Locale.GERMANY);
 
   private int maxFractionDigits;
@@ -17,7 +19,7 @@ public class Calculator {
     formatter.setMaximumFractionDigits(maxFractionDigits);
   }
 
-  String eval(String input) {
+  String eval(String input, int maxFractionDigits) {
     String[] tokens = input.split(" ");
     BigDecimal v1 = new BigDecimal(tokens[0]);
     BigDecimal v2 = new BigDecimal(tokens[1]);
