@@ -1,5 +1,5 @@
 version = "0.0.1-SNAPSHOT"
-sourceCompatibility = 10
+sourceCompatibility = 11
 
 dependencies {
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")

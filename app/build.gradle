@@ -3,7 +3,7 @@ apply plugin: "io.spring.dependency-management"
 
 group = "com.webcalc"
 version = "0.0.1-SNAPSHOT"
-sourceCompatibility = 10
+sourceCompatibility = 11
 
 dependencies {
   implementation(project(":calculator"))
