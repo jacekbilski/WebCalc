@@ -17,6 +17,7 @@ class CalculatorShould {
       "2 3 +, 5",
       "0 -1 +, -1",
       "-13 122 +, 109",
+      "'1,2 3,4 +', '4,6'",
   })
   void sum(String input, String expectedResult) {
     String result = calculator.eval(input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
@@ -29,6 +30,7 @@ class CalculatorShould {
       "1 2 -, -1",
       "3 0 -, 3",
       "2 -2 -, 4",
+      "'1,2 0,5 -', '0,7'",
   })
   void subtract(String input, String expectedResult) {
     String result = calculator.eval(input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
@@ -42,6 +44,7 @@ class CalculatorShould {
       "3 0 *, 0",
       "-12 12 *, -144",
       "-3 -5 *, 15",
+      "'-2,1 3,4 *', '-7,14'",
   })
   void multiply(String input, String expectedResult) {
     String result = calculator.eval(input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
