@@ -12,6 +12,14 @@ public class Calculator {
 
   static final int DEFAULT_MAX_FRACTION_DIGITS = 2;
 
+  private final NumberFormat formatter;
+
+  public Calculator() {
+    formatter = DecimalFormat.getNumberInstance(Locale.GERMANY);
+    if (formatter instanceof DecimalFormat)
+      ((DecimalFormat) formatter).setParseBigDecimal(true);
+  }
+
   String eval(String input, int maxFractionDigits) {
     String[] tokens = input.split(" ");
     BigDecimal v1 = parse(tokens[0]);
@@ -37,9 +45,6 @@ public class Calculator {
   }
 
   private BigDecimal parse(String string) {
-    NumberFormat formatter = DecimalFormat.getNumberInstance(Locale.GERMANY);
-    if (formatter instanceof DecimalFormat)
-      ((DecimalFormat) formatter).setParseBigDecimal(true);
     try {
       return (BigDecimal) formatter.parse(string);
     } catch (ParseException e) {
@@ -48,7 +53,7 @@ public class Calculator {
   }
 
   private String format(BigDecimal result, int maxFractionDigits) {
-    NumberFormat formatter = DecimalFormat.getNumberInstance(Locale.GERMANY);
+    NumberFormat formatter = (NumberFormat) this.formatter.clone();
     formatter.setMaximumFractionDigits(maxFractionDigits);
     return formatter.format(result);
   }
