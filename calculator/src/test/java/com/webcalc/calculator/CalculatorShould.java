@@ -45,6 +45,7 @@ class CalculatorShould {
       "-12 12 *, -144",
       "-3 -5 *, 15",
       "'-2,1 3,4 *', '-7,14'",
+      "'3,333 4,444 *', '14,81'",
   })
   void multiply(String input, String expectedResult) {
     String result = calculator.eval(input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
