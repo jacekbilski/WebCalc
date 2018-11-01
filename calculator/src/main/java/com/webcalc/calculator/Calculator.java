@@ -2,7 +2,9 @@ package com.webcalc.calculator;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Locale;
 import java.util.function.BinaryOperator;
 
@@ -12,8 +14,8 @@ public class Calculator {
 
   String eval(String input, int maxFractionDigits) {
     String[] tokens = input.split(" ");
-    BigDecimal v1 = new BigDecimal(tokens[0]);
-    BigDecimal v2 = new BigDecimal(tokens[1]);
+    BigDecimal v1 = parse(tokens[0]);
+    BigDecimal v2 = parse(tokens[1]);
     BinaryOperator<BigDecimal> f = function(tokens[2], maxFractionDigits);
     BigDecimal result = f.apply(v1, v2);
     return format(result, maxFractionDigits);
@@ -34,8 +36,19 @@ public class Calculator {
     }
   }
 
+  private BigDecimal parse(String string) {
+    NumberFormat formatter = DecimalFormat.getNumberInstance(Locale.GERMANY);
+    if (formatter instanceof DecimalFormat)
+      ((DecimalFormat) formatter).setParseBigDecimal(true);
+    try {
+      return (BigDecimal) formatter.parse(string);
+    } catch (ParseException e) {
+      throw new RuntimeException("Cannot recognize a number: '" + string + "'", e);
+    }
+  }
+
   private String format(BigDecimal result, int maxFractionDigits) {
-    NumberFormat formatter = NumberFormat.getNumberInstance(Locale.GERMANY);
+    NumberFormat formatter = DecimalFormat.getNumberInstance(Locale.GERMANY);
     formatter.setMaximumFractionDigits(maxFractionDigits);
     return formatter.format(result);
   }
