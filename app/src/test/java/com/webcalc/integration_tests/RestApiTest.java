@@ -43,37 +43,32 @@ class RestApiTest {
   void maxFractionDigitsAffectsOnlyCurrentSession() {
     SessionFilter session1 = new SessionFilter();
     SessionFilter session2 = new SessionFilter();
+    String expression = "8 7 /";
 
+    setMaxFractionDigitsForSession(3, session1);
+    setMaxFractionDigitsForSession(5, session2);
+
+    assertEvalResultForSession(expression, "1,143", session1);
+    assertEvalResultForSession(expression, "1,14286", session2);
+  }
+
+  private void setMaxFractionDigitsForSession(int maxFractionDigits, SessionFilter session) {
     given()
-        .filter(session1)
-        .body("3")
+        .filter(session)
+        .body(maxFractionDigits)
     .when()
         .put("/maxFractionDigits")
     .then()
         .statusCode(200);
+  }
 
+  private void assertEvalResultForSession(String expression, String expectedResult, SessionFilter session) {
     given()
-        .filter(session2)
-        .body("5")
-    .when()
-        .put("/maxFractionDigits")
-    .then()
-        .statusCode(200);
-
-    given()
-        .filter(session1)
-        .body("8 7 /")
+        .filter(session)
+        .body(expression)
     .when()
         .post("/eval")
     .then()
-        .body(equalTo("1,143"));
-
-    given()
-        .filter(session2)
-        .body("8 7 /")
-    .when()
-        .post("/eval")
-    .then()
-        .body(equalTo("1,14286"));
+        .body(equalTo(expectedResult));
   }
 }
