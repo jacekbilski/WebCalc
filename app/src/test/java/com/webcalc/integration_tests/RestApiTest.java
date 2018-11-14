@@ -14,32 +14,14 @@ class RestApiTest {
 
   @Test
   void invokesWebCalcRestApi() {
-    given()
-        .body("1 2 +")
-    .when()
-        .post("/eval")
-    .then()
-        .body(equalTo("3"));
+    assertEvalResult("1 2 +", "3");
   }
 
   @Test
   void settingMaxFractionDigits() {
     SessionFilter session = new SessionFilter();
-    given()
-        .filter(session)
-        .body("5")
-    .when()
-        .put("/maxFractionDigits")
-    .then()
-        .statusCode(200);
-
-    given()
-        .filter(session)
-        .body("8 7 /")
-    .when()
-        .post("/eval")
-    .then()
-        .body(equalTo("1,14286"));
+    setMaxFractionDigitsForSession(5, session);
+    assertEvalResultForSession("8 7 /", "1,14286", session);
   }
 
   @Test
@@ -63,6 +45,10 @@ class RestApiTest {
         .put("/maxFractionDigits")
     .then()
         .statusCode(200);
+  }
+
+  private void assertEvalResult(String expression, String expectedResult) {
+    assertEvalResultForSession(expression, expectedResult, new SessionFilter());
   }
 
   private void assertEvalResultForSession(String expression, String expectedResult, SessionFilter session) {
