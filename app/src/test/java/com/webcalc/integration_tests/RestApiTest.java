@@ -37,6 +37,11 @@ class RestApiTest {
     assertEvalResultForSession(expression, "1,14286", session2);
   }
 
+  @Test
+  void canDoComplexCalculations() {
+    assertEvalResult("1 2 3 + +", "6");
+  }
+
   private void setMaxFractionDigitsForSession(int maxFractionDigits, SessionFilter session) {
     given()
         .filter(session)

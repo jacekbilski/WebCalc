@@ -66,4 +66,14 @@ class CalculatorShould {
     String result = calculator.eval(input, maxFractionDigits);
     assertThat(result).isEqualTo(expectedResult);
   }
+
+  @DisplayName("Complex calculations")
+  @ParameterizedTest(name = "input: ''{0}'', expected result: ''{1}''")
+  @CsvSource({
+      "1 2 3 + +, 6",
+  })
+  void complexCalculations(String input, String expectedResult) {
+    String result = calculator.eval(input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
+    assertThat(result).isEqualTo(expectedResult);
+  }
 }
