@@ -1,12 +1,9 @@
 buildscript {
   ext {
-    springBootVersion = "2.1.0.RELEASE"
-    junitVersion = "5.3.1"
-    assertjVersion = "3.11.1"
+    springBootVersion = "2.1.1.RELEASE"
   }
   repositories {
     mavenCentral()
-    maven { url "https://repo.spring.io/milestone" }
   }
   dependencies {
     classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -15,9 +12,9 @@ buildscript {
 
 allprojects {
   apply plugin: "java"
+  apply plugin: "io.spring.dependency-management"
 
   repositories {
     mavenCentral()
-    maven { url "https://repo.spring.io/milestone" }
   }
 }
