@@ -71,6 +71,10 @@ class CalculatorShould {
   @ParameterizedTest(name = "input: ''{0}'', expected result: ''{1}''")
   @CsvSource({
       "1 2 3 + +, 6",
+      "2 3 4 + *, 14",
+      "'3,2 2,8 2 / -', '1,8'",
+      "1 2 3 4 5 * * * *, 120",
+      "1 2 + 3 *, 9",
   })
   void complexCalculations(String input, String expectedResult) {
     String result = calculator.eval(input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
