@@ -24,12 +24,17 @@ public class Calculator {
   String eval(String input, int maxFractionDigits) {
     String[] tokens = input.split(" ");
     var stack = new Stack<BigDecimal>();
-    stack.push(parse(tokens[0]));
-    stack.push(parse(tokens[1]));
-    var f = function(tokens[2], maxFractionDigits);
-    var a = stack.pop();
-    var b = stack.pop();
-    stack.push(f.apply(b, a));
+    for (String token : tokens) {
+      try {
+        var value = parse(token);
+        stack.push(value);
+      } catch (Exception e) {
+        var f = function(token, maxFractionDigits);
+        var a = stack.pop();
+        var b = stack.pop();
+        stack.push(f.apply(b, a));
+      }
+    }
     return format(stack.pop(), maxFractionDigits);
   }
 
