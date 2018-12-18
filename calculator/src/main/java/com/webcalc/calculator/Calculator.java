@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
+import java.util.Stack;
 import java.util.function.BinaryOperator;
 
 public class Calculator {
@@ -22,11 +23,14 @@ public class Calculator {
 
   String eval(String input, int maxFractionDigits) {
     String[] tokens = input.split(" ");
-    BigDecimal v1 = parse(tokens[0]);
-    BigDecimal v2 = parse(tokens[1]);
-    BinaryOperator<BigDecimal> f = function(tokens[2], maxFractionDigits);
-    BigDecimal result = f.apply(v1, v2);
-    return format(result, maxFractionDigits);
+    var stack = new Stack<BigDecimal>();
+    stack.push(parse(tokens[0]));
+    stack.push(parse(tokens[1]));
+    var f = function(tokens[2], maxFractionDigits);
+    var a = stack.pop();
+    var b = stack.pop();
+    stack.push(f.apply(b, a));
+    return format(stack.pop(), maxFractionDigits);
   }
 
   private BinaryOperator<BigDecimal> function(String function, int maxFractionDigits) {
