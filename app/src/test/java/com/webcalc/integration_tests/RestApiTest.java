@@ -42,6 +42,16 @@ class RestApiTest {
     assertEvalResult("1 2 3 + +", "6");
   }
 
+  @Test
+  void anonymousUsersCannotPerformCalculations() {
+    given()
+        .body("1 2 +")
+    .when()
+        .post("/eval")
+    .then()
+        .statusCode(401);
+  }
+
   private void setMaxFractionDigitsForSession(int maxFractionDigits, SessionFilter session) {
     given()
         .filter(session)
