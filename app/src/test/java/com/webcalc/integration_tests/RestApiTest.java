@@ -12,6 +12,9 @@ import static org.hamcrest.Matchers.equalTo;
     webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class RestApiTest {
 
+  private static final String DEFAULT_USERNAME = "mmustermann";
+  private static final String DEFAULT_PASSWORD = "9786f3gb4508c2393q7y";
+
   @Test
   void invokesWebCalcRestApi() {
     assertEvalResult("1 2 +", "3");
@@ -55,6 +58,7 @@ class RestApiTest {
   private void setMaxFractionDigitsForSession(int maxFractionDigits, SessionFilter session) {
     given()
         .filter(session)
+        .auth().preemptive().basic(DEFAULT_USERNAME, DEFAULT_PASSWORD)
         .body(maxFractionDigits)
     .when()
         .put("/maxFractionDigits")
@@ -69,6 +73,7 @@ class RestApiTest {
   private void assertEvalResultForSession(String expression, String expectedResult, SessionFilter session) {
     given()
         .filter(session)
+        .auth().preemptive().basic(DEFAULT_USERNAME, DEFAULT_PASSWORD)
         .body(expression)
     .when()
         .post("/eval")
