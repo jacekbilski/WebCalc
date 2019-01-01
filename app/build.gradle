@@ -9,6 +9,7 @@ sourceCompatibility = 11
 dependencies {
   implementation(project(":calculator"))
   implementation("org.springframework.boot:spring-boot-starter-web")
+  implementation("org.springframework.boot:spring-boot-starter-security")
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
     exclude group: "junit", module: "junit"
   }
