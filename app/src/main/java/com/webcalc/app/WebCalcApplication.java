@@ -1,5 +1,6 @@
 package com.webcalc.app;
 
+import com.webcalc.billing.Billing;
 import com.webcalc.calculator.Calculator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,6 +21,11 @@ public class WebCalcApplication {
   @Bean
   public Calculator calculator() {
     return new Calculator();
+  }
+
+  @Bean
+  public Billing billing() {
+    return new Billing();
   }
 
   @Configuration

@@ -6,8 +6,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BillingController {
 
+  private final Billing billing;
+
+  public BillingController(Billing billing) {
+    this.billing = billing;
+  }
+
   @GetMapping("/balance")
   public String getBalance() {
-    return "0";
+    return billing.getBalance().toPlainString();
   }
 }
