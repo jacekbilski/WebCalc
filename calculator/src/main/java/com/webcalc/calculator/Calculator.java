@@ -21,7 +21,7 @@ public class Calculator {
       ((DecimalFormat) formatter).setParseBigDecimal(true);
   }
 
-  String eval(String input, int maxFractionDigits) {
+  public String eval(String input, int maxFractionDigits) {
     String[] tokens = input.split(" ");
     var stack = new Stack<BigDecimal>();
     for (String token : tokens) {
