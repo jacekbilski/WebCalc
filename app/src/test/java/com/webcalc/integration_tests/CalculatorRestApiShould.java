@@ -10,25 +10,25 @@ import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest(classes = WebCalcApplication.class,
     webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-class RestApiTest {
+class CalculatorRestApiShould {
 
   private static final String DEFAULT_USERNAME = "mmustermann";
   private static final String DEFAULT_PASSWORD = "9786f3gb4508c2393q7y";
 
   @Test
-  void invokesWebCalcRestApi() {
+  void returnResult() {
     assertEvalResult("1 2 +", "3");
   }
 
   @Test
-  void settingMaxFractionDigits() {
+  void setMaxFractionDigits() {
     SessionFilter session = new SessionFilter();
     setMaxFractionDigitsForSession(5, session);
     assertEvalResultForSession("8 7 /", "1,14286", session);
   }
 
   @Test
-  void maxFractionDigitsAffectsOnlyCurrentSession() {
+  void setMaxFractionDigitsOnlyForCurrentSession() {
     SessionFilter session1 = new SessionFilter();
     SessionFilter session2 = new SessionFilter();
     String expression = "8 7 /";
@@ -41,12 +41,12 @@ class RestApiTest {
   }
 
   @Test
-  void canDoComplexCalculations() {
+  void doComplexCalculations() {
     assertEvalResult("1 2 3 + +", "6");
   }
 
   @Test
-  void anonymousUsersCannotPerformCalculations() {
+  void preventAnonymousUsersFromPerformingCalculations() {
     given()
         .body("1 2 +")
     .when()
