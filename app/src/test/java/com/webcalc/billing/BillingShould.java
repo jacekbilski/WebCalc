@@ -1,5 +1,7 @@
 package com.webcalc.billing;
 
+import com.webcalc.calculator.Calculator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -11,6 +13,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BillingShould {
 
   private final Billing billing = new Billing();
+  private final Calculator calculator = new Calculator();
+
+  @BeforeEach
+  void setUp() {
+    calculator.addObserver(billing);
+  }
 
   @Test
   void returnBalanceZero_whenNoCalculationsWereDone() {
