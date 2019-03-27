@@ -15,6 +15,8 @@ public class Calculator {
 
   private final NumberFormat formatter;
 
+  private CalculatorObserver observer;
+
   public Calculator() {
     formatter = DecimalFormat.getNumberInstance(Locale.GERMANY);
     if (formatter instanceof DecimalFormat)
@@ -65,5 +67,9 @@ public class Calculator {
     NumberFormat formatter = (NumberFormat) this.formatter.clone();
     formatter.setMaximumFractionDigits(maxFractionDigits);
     return formatter.format(result);
+  }
+
+  public void addObserver(CalculatorObserver observer) {
+    this.observer = observer;
   }
 }
