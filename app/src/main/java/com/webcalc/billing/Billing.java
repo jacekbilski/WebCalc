@@ -6,7 +6,14 @@ import java.math.BigDecimal;
 
 public class Billing implements CalculatorObserver {
 
+  private BigDecimal balance = BigDecimal.ZERO;
+
   public BigDecimal getBalance() {
-    return BigDecimal.ZERO;
+    return balance;
+  }
+
+  @Override
+  public void evaluated() {
+    balance = balance.add(BigDecimal.ONE);
   }
 }

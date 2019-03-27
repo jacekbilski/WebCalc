@@ -35,6 +35,8 @@ public class Calculator {
         var a = stack.pop();
         var b = stack.pop();
         stack.push(f.apply(b, a));
+        if (observer != null)
+          observer.evaluated();
       }
     }
     return format(stack.pop(), maxFractionDigits);
