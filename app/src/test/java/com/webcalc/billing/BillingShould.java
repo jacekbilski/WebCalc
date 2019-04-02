@@ -73,9 +73,12 @@ class BillingShould {
       "1 3 0 * +, 6",
       "-1 -1 12 + -, 2",
       "3 6 2 / *, 15",
+      "2 3 + ; 8 2 2 / /, 21",
   })
   void complexBilling(String input, BigDecimal expectedBalance) {
-    calculator.eval(input, 2);
+    for (String i : input.split(";")) {
+      calculator.eval(i, 2);
+    }
     BigDecimal balance = billing.getBalance();
     assertThat(balance).isEqualByComparingTo(expectedBalance);
   }
