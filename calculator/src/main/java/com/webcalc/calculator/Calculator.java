@@ -24,7 +24,7 @@ public class Calculator {
   }
 
   public String eval(String input, int maxFractionDigits) {
-    String[] tokens = input.split(" ");
+    String[] tokens = input.trim().split(" ");
     var stack = new Stack<BigDecimal>();
     for (String token : tokens) {
       try {
