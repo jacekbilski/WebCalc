@@ -27,9 +27,17 @@ class BillingShould {
   }
 
   @Test
-  void returnBalanceOfOne_afterCalculatingOneSum() {
+  void returnBalanceOfOne_afterCalculatingOneAddition() {
     calculator.eval("1 2 +", 0);
     BigDecimal balance = billing.getBalance();
     assertThat(balance).isEqualByComparingTo(ONE);
+  }
+
+  @Test
+  void returnBalanceOfTwo_afterCalculatingTwoAdditions() {
+    calculator.eval("1 2 +", 0);
+    calculator.eval("1 2 +", 0);
+    BigDecimal balance = billing.getBalance();
+    assertThat(balance).isEqualByComparingTo(new BigDecimal("2"));
   }
 }
