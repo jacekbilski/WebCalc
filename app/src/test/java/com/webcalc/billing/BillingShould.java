@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 
 import static java.math.BigDecimal.ONE;
+import static java.math.BigDecimal.TEN;
 import static java.math.BigDecimal.ZERO;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -53,5 +54,12 @@ class BillingShould {
     calculator.eval("3 3 -", 0);
     BigDecimal balance = billing.getBalance();
     assertThat(balance).isEqualByComparingTo(ONE);
+  }
+
+  @Test
+  void returnBalanceOfTen_afterCalculatingOneDivision() {
+    calculator.eval("5 2.5 /", 2);
+    BigDecimal balance = billing.getBalance();
+    assertThat(balance).isEqualByComparingTo(TEN);
   }
 }
