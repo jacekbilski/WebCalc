@@ -47,4 +47,11 @@ class BillingShould {
     BigDecimal balance = billing.getBalance();
     assertThat(balance).isEqualByComparingTo(new BigDecimal("5"));
   }
+
+  @Test
+  void returnBalanceOfOne_afterCalculatingOneSubtraction() {
+    calculator.eval("3 3 -", 0);
+    BigDecimal balance = billing.getBalance();
+    assertThat(balance).isEqualByComparingTo(ONE);
+  }
 }

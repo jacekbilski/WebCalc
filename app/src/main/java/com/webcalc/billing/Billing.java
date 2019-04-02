@@ -14,9 +14,14 @@ public class Billing implements CalculatorObserver {
 
   @Override
   public void evaluated(String function) {
-    if ("+".equals(function))
-      balance = balance.add(BigDecimal.ONE);
-    else
-      balance = balance.add(new BigDecimal("5"));
+    switch (function) {
+      case "+":
+      case "-":
+        balance = balance.add(BigDecimal.ONE);
+        break;
+      case "*":
+        balance = balance.add(new BigDecimal("5"));
+        break;
+    }
   }
 }
