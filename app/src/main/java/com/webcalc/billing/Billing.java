@@ -13,7 +13,10 @@ public class Billing implements CalculatorObserver {
   }
 
   @Override
-  public void evaluated() {
-    balance = balance.add(BigDecimal.ONE);
+  public void evaluated(String function) {
+    if ("+".equals(function))
+      balance = balance.add(BigDecimal.ONE);
+    else
+      balance = balance.add(new BigDecimal("5"));
   }
 }
