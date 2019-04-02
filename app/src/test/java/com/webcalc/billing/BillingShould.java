@@ -2,7 +2,10 @@ package com.webcalc.billing;
 
 import com.webcalc.calculator.Calculator;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.math.BigDecimal;
 
@@ -61,5 +64,19 @@ class BillingShould {
     calculator.eval("5 2.5 /", 2);
     BigDecimal balance = billing.getBalance();
     assertThat(balance).isEqualByComparingTo(TEN);
+  }
+
+  @DisplayName("Bill complex operations")
+  @ParameterizedTest(name = "input: ''{0}'', expected balance: ''{1}''")
+  @CsvSource({
+      "1 2 *, 5",
+      "1 3 0 * +, 6",
+      "-1 -1 12 + -, 2",
+      "3 6 2 / *, 15",
+  })
+  void complexBilling(String input, BigDecimal expectedBalance) {
+    calculator.eval(input, 2);
+    BigDecimal balance = billing.getBalance();
+    assertThat(balance).isEqualByComparingTo(expectedBalance);
   }
 }
