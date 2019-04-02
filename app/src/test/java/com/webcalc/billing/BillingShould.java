@@ -40,4 +40,11 @@ class BillingShould {
     BigDecimal balance = billing.getBalance();
     assertThat(balance).isEqualByComparingTo(new BigDecimal("2"));
   }
+
+  @Test
+  void returnBalanceOfFive_afterCalculatingOneMultiplication() {
+    calculator.eval("3 2 *", 0);
+    BigDecimal balance = billing.getBalance();
+    assertThat(balance).isEqualByComparingTo(new BigDecimal("5"));
+  }
 }
