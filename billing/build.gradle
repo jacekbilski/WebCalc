@@ -1,20 +1,14 @@
-plugins {
-  id "org.springframework.boot"
-}
-
-group = "com.webcalc"
 version = "0.0.1-SNAPSHOT"
 sourceCompatibility = 11
 
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+  }
+}
+
 dependencies {
   implementation(project(":calculator"))
-  implementation(project(":billing"))
-  implementation("org.springframework.boot:spring-boot-starter-web")
-  implementation("org.springframework.boot:spring-boot-starter-security")
-  testImplementation("org.springframework.boot:spring-boot-starter-test") {
-    exclude group: "junit", module: "junit"
-  }
-  testImplementation("io.rest-assured:rest-assured")
   testImplementation("org.junit.jupiter:junit-jupiter-api")
   testImplementation("org.junit.jupiter:junit-jupiter-params")
   testRuntime("org.junit.jupiter:junit-jupiter-engine")
