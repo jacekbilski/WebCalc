@@ -4,11 +4,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CalculatorShould {
 
   private final Calculator calculator = new Calculator();
+
+  private final UUID userId = UUID.randomUUID();
 
   @DisplayName("Sum")
   @ParameterizedTest(name = "input: ''{0}'', expected result: ''{1}''")
@@ -20,7 +24,7 @@ class CalculatorShould {
       "'1,2 3,4 +', '4,6'",
   })
   void sum(String input, String expectedResult) {
-    String result = calculator.eval(input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
+    String result = calculator.eval(userId, input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
     assertThat(result).isEqualTo(expectedResult);
   }
 
@@ -33,7 +37,7 @@ class CalculatorShould {
       "'1,2 0,5 -', '0,7'",
   })
   void subtract(String input, String expectedResult) {
-    String result = calculator.eval(input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
+    String result = calculator.eval(userId, input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
     assertThat(result).isEqualTo(expectedResult);
   }
 
@@ -48,7 +52,7 @@ class CalculatorShould {
       "'3,333 4,444 *', '14,81'",
   })
   void multiply(String input, String expectedResult) {
-    String result = calculator.eval(input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
+    String result = calculator.eval(userId, input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
     assertThat(result).isEqualTo(expectedResult);
   }
 
@@ -63,7 +67,7 @@ class CalculatorShould {
       "3 2 /, 2, 0",
   })
   void divide(String input, String expectedResult, int maxFractionDigits) {
-    String result = calculator.eval(input, maxFractionDigits);
+    String result = calculator.eval(userId, input, maxFractionDigits);
     assertThat(result).isEqualTo(expectedResult);
   }
 
@@ -77,7 +81,7 @@ class CalculatorShould {
       "1 2 + 3 *, 9",
   })
   void complexCalculations(String input, String expectedResult) {
-    String result = calculator.eval(input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
+    String result = calculator.eval(userId, input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
     assertThat(result).isEqualTo(expectedResult);
   }
 }

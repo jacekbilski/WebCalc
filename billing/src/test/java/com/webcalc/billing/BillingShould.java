@@ -30,43 +30,43 @@ class BillingShould {
 
   @Test
   void returnBalanceZero_whenNoCalculationsWereDone() {
-    BigDecimal balance = billing.getBalance();
+    BigDecimal balance = billing.getBalance(userA);
     assertThat(balance).isEqualByComparingTo(ZERO);
   }
 
   @Test
   void returnBalanceOfOne_afterCalculatingOneAddition() {
-    calculator.eval("1 2 +", 0);
-    BigDecimal balance = billing.getBalance();
+    calculator.eval(userA, "1 2 +", 0);
+    BigDecimal balance = billing.getBalance(userA);
     assertThat(balance).isEqualByComparingTo(ONE);
   }
 
   @Test
   void returnBalanceOfTwo_afterCalculatingTwoAdditions() {
-    calculator.eval("1 2 +", 0);
-    calculator.eval("1 2 +", 0);
-    BigDecimal balance = billing.getBalance();
+    calculator.eval(userA, "1 2 +", 0);
+    calculator.eval(userA, "1 2 +", 0);
+    BigDecimal balance = billing.getBalance(userA);
     assertThat(balance).isEqualByComparingTo(new BigDecimal("2"));
   }
 
   @Test
   void returnBalanceOfFive_afterCalculatingOneMultiplication() {
-    calculator.eval("3 2 *", 0);
-    BigDecimal balance = billing.getBalance();
+    calculator.eval(userA, "3 2 *", 0);
+    BigDecimal balance = billing.getBalance(userA);
     assertThat(balance).isEqualByComparingTo(new BigDecimal("5"));
   }
 
   @Test
   void returnBalanceOfOne_afterCalculatingOneSubtraction() {
-    calculator.eval("3 3 -", 0);
-    BigDecimal balance = billing.getBalance();
+    calculator.eval(userA, "3 3 -", 0);
+    BigDecimal balance = billing.getBalance(userA);
     assertThat(balance).isEqualByComparingTo(ONE);
   }
 
   @Test
   void returnBalanceOfTen_afterCalculatingOneDivision() {
-    calculator.eval("5 2.5 /", 2);
-    BigDecimal balance = billing.getBalance();
+    calculator.eval(userA, "5 2.5 /", 2);
+    BigDecimal balance = billing.getBalance(userA);
     assertThat(balance).isEqualByComparingTo(TEN);
   }
 
@@ -81,9 +81,9 @@ class BillingShould {
   })
   void complexBilling(String input, BigDecimal expectedBalance) {
     for (String i : input.split(";")) {
-      calculator.eval(i, 2);
+      calculator.eval(userA, i, 2);
     }
-    BigDecimal balance = billing.getBalance();
+    BigDecimal balance = billing.getBalance(userA);
     assertThat(balance).isEqualByComparingTo(expectedBalance);
   }
 
