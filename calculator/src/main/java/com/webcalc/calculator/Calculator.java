@@ -37,7 +37,7 @@ public class Calculator {
         var b = stack.pop();
         stack.push(f.apply(b, a));
         if (observer != null)
-          observer.evaluated(token);
+          observer.evaluated(userId, token);
       }
     }
     return format(stack.pop(), maxFractionDigits);
