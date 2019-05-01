@@ -14,6 +14,6 @@ public class BillingController {
 
   @GetMapping("/balance")
   public String getBalance() {
-    return billing.getBalance().toPlainString();
+    return billing.getBalance(null).toPlainString();
   }
 }

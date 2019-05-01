@@ -22,7 +22,7 @@ public class CalculatorController {
   public String calculate(@RequestBody String body, HttpSession session) {
     if (session.getAttribute(MAX_FRACTION_DIGITS) == null)
       session.setAttribute(MAX_FRACTION_DIGITS, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
-    return calculator.eval(body, (Integer) session.getAttribute(MAX_FRACTION_DIGITS));
+    return calculator.eval(null, body, (Integer) session.getAttribute(MAX_FRACTION_DIGITS));
   }
 
   @PutMapping("/maxFractionDigits")
