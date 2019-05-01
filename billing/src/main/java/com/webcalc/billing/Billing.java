@@ -3,6 +3,7 @@ package com.webcalc.billing;
 import com.webcalc.calculator.CalculatorObserver;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.TEN;
@@ -12,7 +13,7 @@ public class Billing implements CalculatorObserver {
 
   private BigDecimal balance = ZERO;
 
-  public BigDecimal getBalance() {
+  public BigDecimal getBalance(UUID userId) {
     return balance;
   }
 

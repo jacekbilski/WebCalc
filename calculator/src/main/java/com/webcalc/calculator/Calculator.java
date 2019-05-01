@@ -7,6 +7,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
 import java.util.Stack;
+import java.util.UUID;
 import java.util.function.BinaryOperator;
 
 public class Calculator {
@@ -23,7 +24,7 @@ public class Calculator {
       ((DecimalFormat) formatter).setParseBigDecimal(true);
   }
 
-  public String eval(String input, int maxFractionDigits) {
+  public String eval(UUID userId, String input, int maxFractionDigits) {
     String[] tokens = input.trim().split(" ");
     var stack = new Stack<BigDecimal>();
     for (String token : tokens) {
