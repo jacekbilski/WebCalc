@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.TEN;
@@ -18,6 +19,9 @@ class BillingShould {
 
   private final Billing billing = new Billing();
   private final Calculator calculator = new Calculator();
+
+  private UUID userA = UUID.randomUUID();
+  private UUID userB = UUID.randomUUID();
 
   @BeforeEach
   void setUp() {
@@ -81,5 +85,12 @@ class BillingShould {
     }
     BigDecimal balance = billing.getBalance();
     assertThat(balance).isEqualByComparingTo(expectedBalance);
+  }
+
+  @Test
+  void billOnlyUserA_whenAIsCalculating() {
+    calculator.eval(userA, "1 2 +", 0);
+    assertThat(billing.getBalance(userA)).isEqualByComparingTo(ONE);
+    assertThat(billing.getBalance(userB)).isEqualByComparingTo(ZERO);
   }
 }
