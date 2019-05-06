@@ -2,6 +2,7 @@ package com.webcalc.app;
 
 import com.webcalc.billing.Billing;
 import com.webcalc.calculator.Calculator;
+import com.webcalc.user.WebCalcUserDetailsService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 @SpringBootApplication
 @ComponentScan("com.webcalc")
@@ -26,6 +28,11 @@ public class WebCalcApplication {
   @Bean
   public Billing billing() {
     return new Billing();
+  }
+
+  @Bean
+  public UserDetailsService userDetailsService() {
+    return new WebCalcUserDetailsService();
   }
 
   @Configuration
