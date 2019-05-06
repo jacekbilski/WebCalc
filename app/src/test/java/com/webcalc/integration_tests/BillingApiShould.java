@@ -28,6 +28,22 @@ class BillingApiShould {
   }
 
   @Test
+  void chargeUser1_when1IsCalculating() {
+    given()
+        .auth().preemptive().basic(USER1_NAME, USER1_PASS)
+        .body("1 2 +")
+    .when()
+        .post("/eval");
+
+    given()
+        .auth().preemptive().basic(USER1_NAME, USER1_PASS)
+    .when()
+        .get("/balance")
+    .then()
+        .body(equalTo("1"));
+  }
+
+  @Test
   void chargeOnlyUser1_when1IsCalculating() {
     given()
         .auth().preemptive().basic(USER1_NAME, USER1_PASS)
