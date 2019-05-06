@@ -13,7 +13,7 @@ public class WebCalcUserDetailsService implements UserDetailsService {
   private static final Map<String, User> users = new HashMap<>();
 
   static {
-    users.put("mmustermann", new User(UUID.randomUUID(), "mmustermann", "9786f3gb4508c2393q7y"));
+    users.put("mmustermann", new User(UUID.randomUUID(), "mmustermann", "{noop}9786f3gb4508c2393q7y"));
   }
 
   @Override
