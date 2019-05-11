@@ -14,6 +14,7 @@ public class WebCalcUserDetailsService implements UserDetailsService {
 
   static {
     users.put("mmustermann", new User(UUID.randomUUID(), "mmustermann", "{noop}9786f3gb4508c2393q7y"));
+    users.put("user2_name", new User(UUID.randomUUID(), "user2_name", "{noop}user2_pass"));
   }
 
   @Override
