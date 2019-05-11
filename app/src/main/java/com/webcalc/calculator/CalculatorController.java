@@ -1,10 +1,13 @@
 package com.webcalc.calculator;
 
+import com.webcalc.user.User;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RestController
@@ -19,10 +22,11 @@ public class CalculatorController {
   }
 
   @PostMapping("/eval")
-  public String calculate(@RequestBody String body, HttpSession session) {
+  public String calculate(@RequestBody String body, HttpSession session, HttpServletRequest request) {
     if (session.getAttribute(MAX_FRACTION_DIGITS) == null)
       session.setAttribute(MAX_FRACTION_DIGITS, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
-    return calculator.eval(null, body, (Integer) session.getAttribute(MAX_FRACTION_DIGITS));
+    Authentication auth = (Authentication) request.getUserPrincipal();
+    return calculator.eval(((User) auth.getPrincipal()).id, body, (Integer) session.getAttribute(MAX_FRACTION_DIGITS));
   }
 
   @PutMapping("/maxFractionDigits")

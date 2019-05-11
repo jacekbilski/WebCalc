@@ -1,7 +1,11 @@
 package com.webcalc.billing;
 
+import com.webcalc.user.User;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class BillingController {
@@ -13,7 +17,8 @@ public class BillingController {
   }
 
   @GetMapping("/balance")
-  public String getBalance() {
-    return billing.getBalance(null).toPlainString();
+  public String getBalance(HttpServletRequest request) {
+    Authentication auth = (Authentication) request.getUserPrincipal();
+    return billing.getBalance(((User) auth.getPrincipal()).id).toPlainString();
   }
 }
