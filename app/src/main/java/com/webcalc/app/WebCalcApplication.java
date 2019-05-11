@@ -26,8 +26,10 @@ public class WebCalcApplication {
   }
 
   @Bean
-  public Billing billing() {
-    return new Billing();
+  public Billing billing(Calculator calculator) {
+    Billing billing = new Billing();
+    calculator.addObserver(billing);
+    return billing;
   }
 
   @Bean
