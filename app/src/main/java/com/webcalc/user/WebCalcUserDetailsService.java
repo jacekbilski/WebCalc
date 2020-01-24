@@ -20,7 +20,7 @@ public class WebCalcUserDetailsService implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     if (users.containsKey(username))
-      return users.get(username);
+      return new SpringUserAdapter(users.get(username));
     throw new UsernameNotFoundException("User unknown");
   }
 }
