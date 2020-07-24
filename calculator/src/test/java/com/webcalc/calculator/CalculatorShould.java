@@ -85,6 +85,16 @@ class CalculatorShould {
     assertThat(result).isEqualTo(expectedResult);
   }
 
+  @DisplayName("Constants")
+  @ParameterizedTest(name = "input: ''{0}'', max fraction digits: ''{2}'', expected result: ''{1}''")
+  @CsvSource({
+      "π, '3,14159', 5",
+  })
+  void constants(String input, String expectedResult, int maxFractionDigits) {
+    String result = calculator.eval(userId, input, maxFractionDigits);
+    assertThat(result).isEqualTo(expectedResult);
+  }
+
   @DisplayName("Custom functions")
   @ParameterizedTest(name = "function: ''{0}'', input: ''{1}'', max fraction digits: ''{3}'', expected result: ''{2}''")
   @CsvSource({
