@@ -95,6 +95,19 @@ class CalculatorShould {
     assertThat(result).isEqualTo(expectedResult);
   }
 
+  @DisplayName("Square")
+  @ParameterizedTest(name = "input: ''{0}'', expected result: ''{1}''")
+  @CsvSource({
+      "0 ^2, 0",
+      "2 ^2, 4",
+      "-3 ^2, 9",
+      "'4,2 ^2', '17,64'"
+  })
+  void square(String input, String expectedResult) {
+    String result = calculator.eval(userId, input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
+    assertThat(result).isEqualTo(expectedResult);
+  }
+
   @DisplayName("Custom functions")
   @ParameterizedTest(name = "function: ''{0}'', input: ''{1}'', max fraction digits: ''{3}'', expected result: ''{2}''")
   @CsvSource({

@@ -62,6 +62,8 @@ public class Calculator {
         };
       case "π":
         return stack -> BigDecimal.valueOf(Math.PI);
+      case "^2":
+        return stack -> stack.pop().pow(2);
       default:
         throw new RuntimeException("Unsupported function: " + function);
     }
