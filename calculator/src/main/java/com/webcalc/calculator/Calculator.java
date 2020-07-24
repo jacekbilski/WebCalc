@@ -8,7 +8,7 @@ import java.text.ParseException;
 import java.util.Locale;
 import java.util.Stack;
 import java.util.UUID;
-import java.util.function.BinaryOperator;
+import java.util.function.Function;
 
 public class Calculator {
 
@@ -34,10 +34,8 @@ public class Calculator {
         var value = parse(token);
         stack.push(value);
       } catch (Exception e) {
-        var f = function(token, maxFractionDigits);
-        var a = stack.pop();
-        var b = stack.pop();
-        stack.push(f.apply(b, a));
+        Function<Stack<BigDecimal>, BigDecimal> f = function(token, maxFractionDigits);
+        stack.push(f.apply(stack));
         if (observer != null)
           observer.evaluated(userId, token);
       }
@@ -45,16 +43,23 @@ public class Calculator {
     return format(stack.pop(), maxFractionDigits);
   }
 
-  private BinaryOperator<BigDecimal> function(String function, int maxFractionDigits) {
+  private Function<Stack<BigDecimal>, BigDecimal> function(String function, int maxFractionDigits) {
     switch (function) {
       case "+":
-        return BigDecimal::add;
+        return stack -> stack.pop().add(stack.pop());
       case "-":
-        return BigDecimal::subtract;
+        return stack -> {
+          BigDecimal a = stack.pop();
+          BigDecimal b = stack.pop();
+          return b.subtract(a);};
       case "*":
-        return BigDecimal::multiply;
+        return stack -> stack.pop().multiply(stack.pop());
       case "/":
-        return (v1, v2) -> v1.divide(v2, maxFractionDigits, RoundingMode.HALF_UP);
+        return stack -> {
+          var a = stack.pop();
+          var b = stack.pop();
+          return b.divide(a, maxFractionDigits, RoundingMode.HALF_UP);
+        };
       default:
         throw new RuntimeException("Unsupported function: " + function);
     }
