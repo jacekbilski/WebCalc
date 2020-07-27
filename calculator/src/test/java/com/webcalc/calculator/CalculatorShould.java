@@ -84,4 +84,15 @@ class CalculatorShould {
     String result = calculator.eval(userId, input, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
     assertThat(result).isEqualTo(expectedResult);
   }
+
+  @DisplayName("Custom functions")
+  @ParameterizedTest(name = "function: ''{0}'', input: ''{1}'', max fraction digits: ''{3}'', expected result: ''{2}''")
+  @CsvSource({
+      "circle_area ^2 π *, 3 circle_area, '28,27', 2",
+  })
+  void supportDefiningAndEvaluatingCustomFunctions(String definition, String input, String expectedResult, int maxFractionDigits) {
+    calculator.defineCustomFunction(definition);
+    String result = calculator.eval(userId, input, maxFractionDigits);
+    assertThat(result).isEqualTo(expectedResult);
+  }
 }
