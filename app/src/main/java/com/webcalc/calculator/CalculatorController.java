@@ -28,8 +28,6 @@ public class CalculatorController {
       session.setAttribute(MAX_FRACTION_DIGITS, Calculator.DEFAULT_MAX_FRACTION_DIGITS);
     Authentication auth = (Authentication) request.getUserPrincipal();
     User user = ((SpringUserAdapter) auth.getPrincipal()).getUser();
-    if (body.equals("3 circle_area"))
-      return "28,27";
     return calculator.eval(user.id, body, (Integer) session.getAttribute(MAX_FRACTION_DIGITS));
   }
 
@@ -39,7 +37,7 @@ public class CalculatorController {
   }
 
   @PutMapping("/define")
-  public void defineCustomFunction() {
-
+  public void defineCustomFunction(@RequestBody String body) {
+    calculator.defineCustomFunction(body);
   }
 }
