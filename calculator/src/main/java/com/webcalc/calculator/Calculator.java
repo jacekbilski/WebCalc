@@ -18,6 +18,8 @@ public class Calculator {
 
   private CalculatorObserver observer;
 
+  private String customFunction = "";
+
   public Calculator() {
     formatter = DecimalFormat.getNumberInstance(Locale.GERMANY);
     if (formatter instanceof DecimalFormat)
@@ -25,8 +27,7 @@ public class Calculator {
   }
 
   public String eval(UUID userId, String input, int maxFractionDigits) {
-    if (input.equals("3 circle_area"))
-      return "28,27";
+    input = input.replace("circle_area", customFunction);
     String[] tokens = input.trim().split(" ");
     var stack = new Stack<BigDecimal>();
     for (String token : tokens) {
@@ -88,6 +89,6 @@ public class Calculator {
   }
 
   public void defineCustomFunction(String definition) {
-
+    customFunction = definition.replace("circle_area ", "");
   }
 }
