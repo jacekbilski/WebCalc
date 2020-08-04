@@ -59,6 +59,7 @@ class CalculatorRestApiShould {
   void canDefineAndExecuteCustomFunction() {
     given()
         .auth().preemptive().basic(DEFAULT_USERNAME, DEFAULT_PASSWORD)
+        .contentType("text/plain; charset=UTF-8")
         .body("circle_area ^2 π *")
     .when()
         .put("/define")
@@ -72,6 +73,7 @@ class CalculatorRestApiShould {
     given()
         .filter(session)
         .auth().preemptive().basic(DEFAULT_USERNAME, DEFAULT_PASSWORD)
+        .contentType("text/plain; charset=UTF-8")
         .body(maxFractionDigits)
     .when()
         .put("/maxFractionDigits")
@@ -87,6 +89,7 @@ class CalculatorRestApiShould {
     given()
         .filter(session)
         .auth().preemptive().basic(DEFAULT_USERNAME, DEFAULT_PASSWORD)
+        .contentType("text/plain; charset=UTF-8")
         .body(expression)
     .when()
         .post("/eval")
