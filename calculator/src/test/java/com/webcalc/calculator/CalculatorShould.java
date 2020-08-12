@@ -112,6 +112,7 @@ class CalculatorShould {
   @ParameterizedTest(name = "function: ''{0}'', input: ''{1}'', max fraction digits: ''{3}'', expected result: ''{2}''")
   @CsvSource({
       "circle_area ^2 π *, 3 circle_area, '28,27', 2",
+      "square_area ^2, 3 square_area, 9, 2",
   })
   void supportDefiningAndEvaluatingCustomFunctions(String definition, String input, String expectedResult, int maxFractionDigits) {
     calculator.defineCustomFunction(definition);
