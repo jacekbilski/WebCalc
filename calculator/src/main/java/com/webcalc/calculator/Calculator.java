@@ -29,9 +29,6 @@ public class Calculator {
   }
 
   public String eval(UUID userId, String input, int maxFractionDigits) {
-    for (Map.Entry<String, String> entry : customFunctions.entrySet()) {
-      input = input.replace(entry.getKey(), entry.getValue());
-    }
     String[] tokens = input.trim().split(" ");
     var stack = new Stack<BigDecimal>();
     eval(userId, stack, tokens, maxFractionDigits);
@@ -44,10 +41,14 @@ public class Calculator {
         var value = parse(token);
         stack.push(value);
       } catch (Exception e) {
-        Function<Stack<BigDecimal>, BigDecimal> f = function(token, maxFractionDigits);
-        stack.push(f.apply(stack));
-        if (observer != null)
-          observer.evaluated(userId, token);
+        if (customFunctions.containsKey(token)) {
+          eval(userId, stack, customFunctions.get(token).split(" "), maxFractionDigits);
+        } else {
+          Function<Stack<BigDecimal>, BigDecimal> f = function(token, maxFractionDigits);
+          stack.push(f.apply(stack));
+          if (observer != null)
+            observer.evaluated(userId, token);
+        }
       }
     }
   }
