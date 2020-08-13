@@ -1,6 +1,7 @@
 package com.webcalc.calculator;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -118,5 +119,13 @@ class CalculatorShould {
     calculator.defineCustomFunction(definition);
     String result = calculator.eval(userId, input, maxFractionDigits);
     assertThat(result).isEqualTo(expectedResult);
+  }
+
+  @Test
+  void handleNestingOfCustomFunctions() {
+    calculator.defineCustomFunction("f1 +");
+    calculator.defineCustomFunction("f2 f1");
+    String result = calculator.eval(userId, "1 2 3 4 f1 f2 f1", 0);
+    assertThat(result).isEqualTo("10");
   }
 }
