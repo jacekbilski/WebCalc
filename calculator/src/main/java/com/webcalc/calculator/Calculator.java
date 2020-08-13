@@ -34,6 +34,11 @@ public class Calculator {
     }
     String[] tokens = input.trim().split(" ");
     var stack = new Stack<BigDecimal>();
+    eval(userId, stack, tokens, maxFractionDigits);
+    return format(stack.pop(), maxFractionDigits);
+  }
+
+  private void eval(UUID userId, Stack<BigDecimal> stack, String[] tokens, int maxFractionDigits) {
     for (String token : tokens) {
       try {
         var value = parse(token);
@@ -45,7 +50,6 @@ public class Calculator {
           observer.evaluated(userId, token);
       }
     }
-    return format(stack.pop(), maxFractionDigits);
   }
 
   private Function<Stack<BigDecimal>, BigDecimal> function(String function, int maxFractionDigits) {
