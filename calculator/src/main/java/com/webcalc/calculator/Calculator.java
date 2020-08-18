@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class Calculator {
 
   private CalculatorObserver observer;
 
-  private final Map<String, String> customFunctions = new HashMap<>();
+  private final Map<String, String[]> customFunctions = new HashMap<>();
 
   public Calculator() {
     formatter = DecimalFormat.getNumberInstance(Locale.GERMANY);
@@ -52,8 +53,8 @@ public class Calculator {
   }
 
   public void defineCustomFunction(String definition) {
-    var nameEnd = definition.indexOf(" ");
-    customFunctions.put(definition.substring(0, nameEnd), definition.substring(nameEnd + 1));
+    var tokens = definition.trim().split(" ");
+    customFunctions.put(tokens[0], Arrays.copyOfRange(tokens, 1, tokens.length));
   }
 
   private TokenType getTokenType(String token) {
@@ -154,15 +155,15 @@ public class Calculator {
   }
 
   private class CustomFunction implements TokenType {
-    final String def;
+    final String[] def;
 
-    CustomFunction(String def) {
+    CustomFunction(String[] def) {
       this.def = def;
     }
 
     @Override
     public void apply(EvaluationContext ctx) {
-      eval(ctx, def.split(" "));
+      eval(ctx, def);
     }
   }
 }
