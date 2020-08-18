@@ -41,47 +41,6 @@ public class Calculator {
       getTokenType(token).apply(ctx);
   }
 
-  private Consumer<EvaluationContext> function(String function) {
-    return ctx -> {
-      BigDecimal result;
-      switch (function) {
-        case "+":
-          result = ctx.stack.pop().add(ctx.stack.pop());
-          break;
-        case "-":
-          var a = ctx.stack.pop();
-          var b = ctx.stack.pop();
-          result = b.subtract(a);
-          break;
-        case "*":
-          result = ctx.stack.pop().multiply(ctx.stack.pop());
-          break;
-        case "/":
-          var c = ctx.stack.pop();
-          var d = ctx.stack.pop();
-          result = d.divide(c, ctx.maxFractionDigits, RoundingMode.HALF_UP);
-          break;
-        case "π":
-          result = BigDecimal.valueOf(Math.PI);
-          break;
-        case "^2":
-          result = ctx.stack.pop().pow(2);
-          break;
-        default:
-          throw new RuntimeException("Unsupported function: " + function);
-      }
-      ctx.stack.push(result);
-    };
-  }
-
-  private BigDecimal parse(String string) {
-    try {
-      return (BigDecimal) formatter.parse(string);
-    } catch (ParseException e) {
-      throw new RuntimeException("Cannot recognize a number: '" + string + "'", e);
-    }
-  }
-
   private String format(BigDecimal result, int maxFractionDigits) {
     NumberFormat formatter = (NumberFormat) this.formatter.clone();
     formatter.setMaximumFractionDigits(maxFractionDigits);
@@ -102,7 +61,7 @@ public class Calculator {
       return new CustomFunction(customFunctions.get(token));
     }
     try {
-      return new Number(parse(token));
+      return new Number(token);
     } catch (Exception ignored) {
       return new PredefinedFunction(token);
     }
@@ -124,16 +83,24 @@ public class Calculator {
     void apply(EvaluationContext ctx);
   }
 
-  private static class Number implements TokenType {
+  private class Number implements TokenType {
     private final BigDecimal number;
 
-    Number(BigDecimal number) {
-      this.number = number;
+    Number(String number) {
+      this.number = parse(number);
     }
 
     @Override
     public void apply(EvaluationContext ctx) {
       ctx.stack.push(number);
+    }
+
+    private BigDecimal parse(String string) {
+      try {
+        return (BigDecimal) formatter.parse(string);
+      } catch (ParseException e) {
+        throw new RuntimeException("Cannot recognize a number: '" + string + "'", e);
+      }
     }
   }
 
@@ -150,6 +117,39 @@ public class Calculator {
       if (observer != null) {
         observer.evaluated(ctx.userId, f);
       }
+    }
+
+    private Consumer<EvaluationContext> function(String function) {
+      return ctx -> {
+        BigDecimal result;
+        switch (function) {
+          case "+":
+            result = ctx.stack.pop().add(ctx.stack.pop());
+            break;
+          case "-":
+            var a = ctx.stack.pop();
+            var b = ctx.stack.pop();
+            result = b.subtract(a);
+            break;
+          case "*":
+            result = ctx.stack.pop().multiply(ctx.stack.pop());
+            break;
+          case "/":
+            var c = ctx.stack.pop();
+            var d = ctx.stack.pop();
+            result = d.divide(c, ctx.maxFractionDigits, RoundingMode.HALF_UP);
+            break;
+          case "π":
+            result = BigDecimal.valueOf(Math.PI);
+            break;
+          case "^2":
+            result = ctx.stack.pop().pow(2);
+            break;
+          default:
+            throw new RuntimeException("Unsupported function: " + function);
+        }
+        ctx.stack.push(result);
+      };
     }
   }
 
