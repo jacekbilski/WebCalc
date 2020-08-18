@@ -37,17 +37,17 @@ public class Calculator {
 
   private void eval(UUID userId, Stack<BigDecimal> stack, String[] tokens, int maxFractionDigits) {
     for (String token : tokens) {
-      try {
-        var value = parse(token);
-        stack.push(value);
-      } catch (Exception e) {
-        if (customFunctions.containsKey(token)) {
-          eval(userId, stack, customFunctions.get(token).split(" "), maxFractionDigits);
-        } else {
-          function(token, maxFractionDigits).accept(stack);
-          if (observer != null) {
-            observer.evaluated(userId, token);
-          }
+      var tokenType = getTokenType(token);
+      if (tokenType instanceof Number) {
+        stack.push(((Number) tokenType).number);
+      }
+      if (tokenType instanceof CustomFunction) {
+        eval(userId, stack, ((CustomFunction) tokenType).def.split(" "), maxFractionDigits);
+      }
+      if (tokenType instanceof PredefinedFunction) {
+        function(((PredefinedFunction) tokenType).f, maxFractionDigits).accept(stack);
+        if (observer != null) {
+          observer.evaluated(userId, token);
         }
       }
     }
@@ -107,5 +107,42 @@ public class Calculator {
   public void defineCustomFunction(String definition) {
     var nameEnd = definition.indexOf(" ");
     customFunctions.put(definition.substring(0, nameEnd), definition.substring(nameEnd + 1));
+  }
+
+  private TokenType getTokenType(String token) {
+    if (customFunctions.containsKey(token)) {
+      return new CustomFunction(customFunctions.get(token));
+    }
+    try {
+      return new Number(parse(token));
+    } catch (Exception ignored) {
+      return new PredefinedFunction(token);
+    }
+  }
+
+  private interface TokenType {}
+
+  private static class Number implements TokenType {
+    final BigDecimal number;
+
+    Number(BigDecimal number) {
+      this.number = number;
+    }
+  }
+
+  private static class PredefinedFunction implements TokenType {
+    final String f;
+
+    PredefinedFunction(String f) {
+      this.f = f;
+    }
+  }
+
+  private static class CustomFunction implements TokenType {
+    final String def;
+
+    CustomFunction(String def) {
+      this.def = def;
+    }
   }
 }
