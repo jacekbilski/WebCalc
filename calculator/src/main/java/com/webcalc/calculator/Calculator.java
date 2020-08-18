@@ -31,58 +31,59 @@ public class Calculator {
   public String eval(UUID userId, String input, int maxFractionDigits) {
     String[] tokens = input.trim().split(" ");
     var stack = new Stack<BigDecimal>();
-    eval(userId, stack, tokens, maxFractionDigits);
+    EvaluationContext ctx = new EvaluationContext(userId, maxFractionDigits, stack);
+    eval(ctx, tokens);
     return format(stack.pop(), maxFractionDigits);
   }
 
-  private void eval(UUID userId, Stack<BigDecimal> stack, String[] tokens, int maxFractionDigits) {
+  private void eval(EvaluationContext ctx, String[] tokens) {
     for (String token : tokens) {
       var tokenType = getTokenType(token);
       if (tokenType instanceof Number) {
-        stack.push(((Number) tokenType).number);
+        ctx.stack.push(((Number) tokenType).number);
       }
       if (tokenType instanceof CustomFunction) {
-        eval(userId, stack, ((CustomFunction) tokenType).def.split(" "), maxFractionDigits);
+        eval(ctx, ((CustomFunction) tokenType).def.split(" "));
       }
       if (tokenType instanceof PredefinedFunction) {
-        function(((PredefinedFunction) tokenType).f, maxFractionDigits).accept(stack);
+        function(((PredefinedFunction) tokenType).f).accept(ctx);
         if (observer != null) {
-          observer.evaluated(userId, token);
+          observer.evaluated(ctx.userId, token);
         }
       }
     }
   }
 
-  private Consumer<Stack<BigDecimal>> function(String function, int maxFractionDigits) {
-    return stack -> {
+  private Consumer<EvaluationContext> function(String function) {
+    return ctx -> {
       BigDecimal result;
       switch (function) {
         case "+":
-          result = stack.pop().add(stack.pop());
+          result = ctx.stack.pop().add(ctx.stack.pop());
           break;
         case "-":
-          var a = stack.pop();
-          var b = stack.pop();
+          var a = ctx.stack.pop();
+          var b = ctx.stack.pop();
           result = b.subtract(a);
           break;
         case "*":
-          result = stack.pop().multiply(stack.pop());
+          result = ctx.stack.pop().multiply(ctx.stack.pop());
           break;
         case "/":
-          var c = stack.pop();
-          var d = stack.pop();
-          result = d.divide(c, maxFractionDigits, RoundingMode.HALF_UP);
+          var c = ctx.stack.pop();
+          var d = ctx.stack.pop();
+          result = d.divide(c, ctx.maxFractionDigits, RoundingMode.HALF_UP);
           break;
         case "π":
           result = BigDecimal.valueOf(Math.PI);
           break;
         case "^2":
-          result = stack.pop().pow(2);
+          result = ctx.stack.pop().pow(2);
           break;
         default:
           throw new RuntimeException("Unsupported function: " + function);
       }
-      stack.push(result);
+      ctx.stack.push(result);
     };
   }
 
@@ -117,6 +118,18 @@ public class Calculator {
       return new Number(parse(token));
     } catch (Exception ignored) {
       return new PredefinedFunction(token);
+    }
+  }
+
+  private static class EvaluationContext {
+    final UUID userId;
+    final int maxFractionDigits;
+    final Stack<BigDecimal> stack;
+
+    private EvaluationContext(UUID userId, int maxFractionDigits, Stack<BigDecimal> stack) {
+      this.userId = userId;
+      this.maxFractionDigits = maxFractionDigits;
+      this.stack = stack;
     }
   }
 
