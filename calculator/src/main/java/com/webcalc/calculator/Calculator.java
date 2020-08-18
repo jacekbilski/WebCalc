@@ -10,7 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
 import java.util.UUID;
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 public class Calculator {
 
@@ -44,39 +44,46 @@ public class Calculator {
         if (customFunctions.containsKey(token)) {
           eval(userId, stack, customFunctions.get(token).split(" "), maxFractionDigits);
         } else {
-          Function<Stack<BigDecimal>, BigDecimal> f = function(token, maxFractionDigits);
-          stack.push(f.apply(stack));
-          if (observer != null)
+          function(token, maxFractionDigits).accept(stack);
+          if (observer != null) {
             observer.evaluated(userId, token);
+          }
         }
       }
     }
   }
 
-  private Function<Stack<BigDecimal>, BigDecimal> function(String function, int maxFractionDigits) {
-    switch (function) {
-      case "+":
-        return stack -> stack.pop().add(stack.pop());
-      case "-":
-        return stack -> {
-          BigDecimal a = stack.pop();
-          BigDecimal b = stack.pop();
-          return b.subtract(a);};
-      case "*":
-        return stack -> stack.pop().multiply(stack.pop());
-      case "/":
-        return stack -> {
+  private Consumer<Stack<BigDecimal>> function(String function, int maxFractionDigits) {
+    return stack -> {
+      BigDecimal result;
+      switch (function) {
+        case "+":
+          result = stack.pop().add(stack.pop());
+          break;
+        case "-":
           var a = stack.pop();
           var b = stack.pop();
-          return b.divide(a, maxFractionDigits, RoundingMode.HALF_UP);
-        };
-      case "π":
-        return stack -> BigDecimal.valueOf(Math.PI);
-      case "^2":
-        return stack -> stack.pop().pow(2);
-      default:
-        throw new RuntimeException("Unsupported function: " + function);
-    }
+          result = b.subtract(a);
+          break;
+        case "*":
+          result = stack.pop().multiply(stack.pop());
+          break;
+        case "/":
+          var c = stack.pop();
+          var d = stack.pop();
+          result = d.divide(c, maxFractionDigits, RoundingMode.HALF_UP);
+          break;
+        case "π":
+          result = BigDecimal.valueOf(Math.PI);
+          break;
+        case "^2":
+          result = stack.pop().pow(2);
+          break;
+        default:
+          throw new RuntimeException("Unsupported function: " + function);
+      }
+      stack.push(result);
+    };
   }
 
   private BigDecimal parse(String string) {
