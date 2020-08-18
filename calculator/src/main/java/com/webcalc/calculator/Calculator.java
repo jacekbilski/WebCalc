@@ -37,21 +37,8 @@ public class Calculator {
   }
 
   private void eval(EvaluationContext ctx, String[] tokens) {
-    for (String token : tokens) {
-      var tokenType = getTokenType(token);
-      if (tokenType instanceof Number) {
-        ctx.stack.push(((Number) tokenType).number);
-      }
-      if (tokenType instanceof CustomFunction) {
-        eval(ctx, ((CustomFunction) tokenType).def.split(" "));
-      }
-      if (tokenType instanceof PredefinedFunction) {
-        function(((PredefinedFunction) tokenType).f).accept(ctx);
-        if (observer != null) {
-          observer.evaluated(ctx.userId, token);
-        }
-      }
-    }
+    for (String token : tokens)
+      getTokenType(token).apply(ctx);
   }
 
   private Consumer<EvaluationContext> function(String function) {
@@ -133,29 +120,49 @@ public class Calculator {
     }
   }
 
-  private interface TokenType {}
+  private interface TokenType {
+    void apply(EvaluationContext ctx);
+  }
 
   private static class Number implements TokenType {
-    final BigDecimal number;
+    private final BigDecimal number;
 
     Number(BigDecimal number) {
       this.number = number;
     }
+
+    @Override
+    public void apply(EvaluationContext ctx) {
+      ctx.stack.push(number);
+    }
   }
 
-  private static class PredefinedFunction implements TokenType {
-    final String f;
+  private class PredefinedFunction implements TokenType {
+    private final String f;
 
     PredefinedFunction(String f) {
       this.f = f;
     }
+
+    @Override
+    public void apply(EvaluationContext ctx) {
+      function(f).accept(ctx);
+      if (observer != null) {
+        observer.evaluated(ctx.userId, f);
+      }
+    }
   }
 
-  private static class CustomFunction implements TokenType {
+  private class CustomFunction implements TokenType {
     final String def;
 
     CustomFunction(String def) {
       this.def = def;
+    }
+
+    @Override
+    public void apply(EvaluationContext ctx) {
+      eval(ctx, def.split(" "));
     }
   }
 }
